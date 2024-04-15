@@ -14,6 +14,10 @@ class FormEditor {
     saveSchema() {
         return this.customFormEditor.saveSchema();
     }
+
+    on(event, callback) {
+        this.customFormEditor.on(event, callback);
+    }
 }
 
 export default FormEditor;
