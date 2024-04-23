@@ -26,8 +26,9 @@ export default {
     plugins: [
         svg(),
         postcss({
-            inject: true,  // Это заставит postcss встроить CSS в JS
-            extract: false  // Убедитесь, что CSS не извлекается в отдельный файл
+            extensions: ['.css'],
+            minimize: true,
+            extract: 'assets/styles.css',
         }),
         alias({
             entries: [
@@ -39,7 +40,11 @@ export default {
             ]
         }),
         resolve({
-            resolveOnly: ['diagram-js', '@bpmn-io/properties-panel'],
+            resolveOnly: [
+                // '@bpmn.io/form-js',
+                '@bpmn-io/properties-panel',
+                // 'diagram-js',
+            ],
         }),
         babel({
             babelHelpers: 'bundled',
