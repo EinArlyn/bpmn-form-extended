@@ -1,5 +1,5 @@
-import {get, set } from 'min-dash';
-import { TextFieldEntry, TextAreaEntry, SelectEntry, NumberFieldEntry, isNumberFieldEntryEdited } from '@bpmn-io/properties-panel';
+import { get, set } from 'min-dash';
+import { TextFieldEntry, SelectEntry } from '@bpmn-io/properties-panel';
 import { html } from 'diagram-js/lib/ui';
 
 export class DictionaryAttributesPropertiesProvider {
@@ -255,14 +255,6 @@ export const propertiesPanelExtension = {
     __init__: ['dictionaryAttributesPropertiesProvider'],
     dictionaryAttributesPropertiesProvider: ['type', DictionaryAttributesPropertiesProvider]
 };
-
-/**
- * DO NOT DELETE!
- * This one is important to load the extension in the form playground demo!
- */
-window.propertiesPanelExtensions = window.propertiesPanelExtensions || [];
-window.propertiesPanelExtensions.push(propertiesPanelExtension);
-// helper //////////////////////
 
 function findGroupIdx(groups, id) {
     return groups.findIndex(g => g.id === id);
