@@ -1,6 +1,6 @@
 {
   "name": "@einarlyn/bpmn-form-extended",
-  "version": "1.1.34",
+  "version": "1.1.59",
   "description": "An extension library for @bpmn.io/form-js that provides custom form editor functionalities",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -29,19 +29,23 @@
     "bpmn-io-extension"
   ],
   "dependencies": {
-    "@bpmn-io/form-js": "^1.8.4",
+    "@bpmn-io/form-js": "^1.8.6",
     "@bpmn-io/properties-panel": "^3.18.2",
     "diagram-js": "^14.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.24.4",
     "@babel/plugin-transform-react-jsx": "^7.23.4",
+    "@babel/preset-env": "^7.24.5",
     "@rollup/plugin-alias": "^5.1.0",
     "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.5",
     "rollup": "^2.79.1",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-svg": "^2.0.0",
+    "rollup-plugin-terser": "^7.0.2",
     "webpack": "^5.91.0"
   }
 }
