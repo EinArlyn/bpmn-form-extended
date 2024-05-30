@@ -64,6 +64,11 @@ export default {
       extract: "assets/styles.css",
     }),
     svg(),
+    terser({
+      mangle: {
+        reserved: ["formFields"],
+      },
+    }),
     // production && terser(), // Минификация кода для продакшена
   ],
   external: [
