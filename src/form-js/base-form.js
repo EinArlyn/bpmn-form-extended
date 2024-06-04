@@ -19,12 +19,12 @@ class BaseForm {
   }
 
   saveSchema() {
-    console.log("Saving schema...");
+    console.info("Saving schema...");
     // saveSchema может отсутствовать в Form, поэтому проверим его наличие
     const result = this.customForm.saveSchema
       ? this.customForm.saveSchema()
       : null;
-    logger.info("Schema saved:", result);
+    console.info("Schema saved:", result);
     return result;
   }
 
