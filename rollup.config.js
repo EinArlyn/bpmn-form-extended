@@ -66,7 +66,7 @@ export default {
     svg(),
     terser({
       mangle: {
-        reserved: ["formFields"],
+        reserved: ["formFields", "RangeField"],
       },
     }),
     // production && terser(), // Минификация кода для продакшена
