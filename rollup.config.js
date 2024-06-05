@@ -64,12 +64,12 @@ export default {
       extract: "assets/styles.css",
     }),
     svg(),
-    terser({
-      mangle: {
-        reserved: ["formFields", "RangeField"],
-      },
-    }),
-    // production && terser(), // Минификация кода для продакшена
+    production &&
+      terser({
+        mangle: {
+          reserved: ["RangeField", "formFields.register", "formFields"],
+        },
+      }), // Минификация кода для продакшена
   ],
   external: [
     "@bpmn.io/form-js",
