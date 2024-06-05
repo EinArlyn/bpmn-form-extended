@@ -1,6 +1,6 @@
 {
   "name": "@einarlyn/bpmn-form-extended",
-  "version": "1.1.74",
+  "version": "1.1.75",
   "description": "An extension library for @bpmn.io/form-js that provides custom form editor functionalities",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
