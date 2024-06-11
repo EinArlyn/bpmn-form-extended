@@ -70,10 +70,10 @@ export default {
           keep_classnames: true,
           keep_fnames: true,
         },
-        compress: {
-          drop_console: false,
-          pure_funcs: ["RangeField", "formFields.register"],
-        },
+        // compress: {
+        //   drop_console: false,
+        //   pure_funcs: ["RangeField", "formFields.register"],
+        // },
         format: {
           comments: false,
         },
