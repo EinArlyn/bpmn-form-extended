@@ -80,8 +80,8 @@ export default {
       }), // Минификация кода для продакшена
   ],
   external: [
-    "@bpmn.io/form-js",
-    "@bpmn.io/properties-panel",
+    // "@bpmn.io/form-js",
+    // "@bpmn.io/properties-panel",
     "luxon", // Поскольку luxon появляется в циклических зависимостях
     "flatpickr", // Если вы не используете flatpickr напрямую
   ],
