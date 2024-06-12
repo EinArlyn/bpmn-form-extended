@@ -1,4 +1,4 @@
-import { get, set } from 'min-dash';
+import {get, set } from 'min-dash';
 import { TextFieldEntry, SelectEntry } from '@bpmn-io/properties-panel';
 import { html } from 'diagram-js/lib/ui';
 
@@ -30,16 +30,31 @@ export class DictionaryAttributesPropertiesProvider {
             if (field.type === 'range') {
                 return groups;
             }
+            //console.log('field customSettingsDictionary', field)
 
             if (field.customSettingsDictionary !== undefined) {
+                const type = get(field, ['type']);
                 const generalIdx = findGroupIdx(groups, 'general');
-
-                /* insert dictionary-attributes group after general */
-                groups.splice(generalIdx + 1, 0, {
-                    id: 'datafield',
-                    label: 'Data Field',
-                    entries: DictionaryAttributesEntries(field, editField)
+                const indexVal = get(field, ['customDictionaryFields']).findIndex(element => {
+                    // check type in dictionary-attributes and type in forms
+                    if ((type === 'textfield' || type === 'number' || type === 'textarea') && (element.type === 'string' || element.type === 'number') && element.ref === undefined) {
+                        return true;
+                    } else if (type === 'select' && element.type === 'string' && element.ref !== undefined) {
+                        return true;
+                    } else if (type === 'datetime' && element.type === 'Date') {
+                        return true;
+                    } else if (type === 'checkbox' && element.type === 'boolean') {
+                        return true;
+                    }
                 });
+                if (indexVal !== -1) {
+                    /* insert dictionary-attributes group after general */
+                    groups.splice(generalIdx + 1, 0, {
+                        id: 'datafield',
+                        label: 'Data Field',
+                        entries: DictionaryAttributesEntries(field, editField)
+                    });
+                }
 
                 return groups;
             } else {
@@ -71,8 +86,27 @@ function DictionaryAttributesEntries(field, editField) {
     };
 
     const getOptions = (key) => {
+        const types = get(field, ['type']);
+        let arrElement = [];
+        get(field, ['customDictionaryFields']).map(element => {
+            if ((types === 'textfield' || types === 'number' || types === 'textarea') && (element.type === 'string' || element.type === 'number') && element.ref === undefined) {
+                arrElement.push(element.name);
+            } else if (types === 'select' && element.type === 'string' && element.ref !== undefined) {
+                arrElement.push(element.name);
+            } else if (types === 'datetime' && element.type === 'Date') {
+                arrElement.push(element.name);
+            } else if (types === 'checkbox' && element.type === 'boolean') {
+                arrElement.push(element.name);
+            }
+        });
+        let dictionaryFields = [];
+        get(field, [key]).map(element => {
+            if (arrElement.includes(element.label)) {
+                dictionaryFields.push(element);
+            }
+        });
         return () => {
-            return get(field, [key]);
+            return dictionaryFields
         };
     };
 
@@ -80,9 +114,10 @@ function DictionaryAttributesEntries(field, editField) {
         return (value) => {
             editField(field, set(field, [key], value));
             const labels = get(field, ['label']);
+            const types = get(field, ['type']);
             const indexVal = get(field, ['customDictionarySelect']).findIndex(element => element.value === labels);
             if (indexVal !== -1) {
-                const indexRefDictionary = get(field, ['customDictionaryFields']).findIndex(element => element.component === 'select' && element.name === labels);
+                const indexRefDictionary = get(field, ['customDictionaryFields']).findIndex(element => element.ref !== undefined && element.name === labels && types === 'select');
                 if (indexRefDictionary === -1) {
                     refDictionary = '';
                     refDictionaryField = '';
@@ -90,7 +125,7 @@ function DictionaryAttributesEntries(field, editField) {
                     editField(field, set(field, ['refDictionaryField'], refDictionaryField));
                 } else {
                     get(field, ['customDictionaryFields']).map(el => {
-                        if (el.ref !== undefined && el.field !== undefined && el.name === labels) {
+                        if (el.ref !== undefined && el.ref !== undefined && el.name === labels) {
                             refDictionary = el.ref;
                             refDictionaryField = el.field;
                             editField(field, set(field, ['refDictionary'], refDictionary));
@@ -100,7 +135,7 @@ function DictionaryAttributesEntries(field, editField) {
                 }
                 get(field, ['customDictionaryFields']).map(elem => {
                     if (elem.name === labels) {
-                        typeDictionaryField = elem.component;
+                        typeDictionaryField = elem.type;
                         editField(field, set(field, ['typeDictionaryField'], typeDictionaryField));
                     };
                 });
@@ -126,40 +161,61 @@ function DictionaryAttributesEntries(field, editField) {
         }
     }
 
-    return [{
-            id: 'select-dictionary-field',
-            component: selectDictionaryFieldComponent,
-            field,
-            label: 'Dictionary fields',
-            getOptions,
-            getValue,
-            setValue,
-        },
-        {
-            id: 'textfield-dictionary-type',
-            component: dictionaryFieldType,
-            field,
-            label: 'Field dictionary type',
-            getValueTypeDictionary,
-            disabled: 'true',
-        },
-        {
-            id: 'textfield-dictionary-ref',
-            component: dictionaryRef,
-            field,
-            label: 'Name Dictionary ref',
-            getValueDictRef,
-            disabled: 'true',
-        },
-        {
-            id: 'textfield-dictionary-ref-field',
-            component: dictionaryRefField,
-            field,
-            label: 'Field Dictionary ref',
-            getValueDictRefField,
-            disabled: 'true',
-        },
-    ];
+    const getDictionaryOutputTable = () => {
+        const types = get(field, ['type']);
+        if (types === 'select') {
+            return [{
+                id: 'select-dictionary-field',
+                component: selectDictionaryFieldComponent,
+                field,
+                label: 'Dictionary fields',
+                getOptions,
+                getValue,
+                setValue,
+            }, {
+                id: 'textfield-dictionary-type',
+                component: dictionaryFieldType,
+                field,
+                label: 'Field dictionary type',
+                getValueTypeDictionary,
+                disabled: 'true',
+            }, {
+                id: 'textfield-dictionary-ref',
+                component: dictionaryRef,
+                field,
+                label: 'Name Dictionary ref',
+                getValueDictRef,
+                disabled: 'true',
+            }, {
+                id: 'textfield-dictionary-ref-field',
+                component: dictionaryRefField,
+                field,
+                label: 'Field Dictionary ref',
+                getValueDictRefField,
+                disabled: 'true',
+            }]
+        } else {
+            return [{
+                id: 'select-dictionary-field',
+                component: selectDictionaryFieldComponent,
+                field,
+                label: 'Dictionary fields',
+                getOptions,
+                getValue,
+                setValue,
+            }, {
+                id: 'textfield-dictionary-type',
+                component: dictionaryFieldType,
+                field,
+                label: 'Field dictionary type',
+                getValueTypeDictionary,
+                disabled: 'true',
+            }]
+        }
+
+    }
+
+    return getDictionaryOutputTable();
 }
 
 function selectDictionaryFieldComponent(props) {
