@@ -4,7 +4,7 @@ import BaseForm from "./base-form";
 export class Form extends BaseForm {
   constructor(options, isAdditionalModules = true) {
     console.log("Initializing FormViewer with options:", options);
-    super(F, options, isAdditionalModules);
+    super(F, options, "Form", isAdditionalModules);
   }
 }
 
