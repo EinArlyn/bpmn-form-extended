@@ -35,16 +35,19 @@ export class DictionaryAttributesPropertiesProvider {
             if (field.customSettingsDictionary !== undefined) {
                 const type = get(field, ['type']);
                 const generalIdx = findGroupIdx(groups, 'general');
+                const typeCompute = {
+                    'string': ['textfield', 'textarea'],
+                    'number': ['number'],
+                    'boolean': ['checkbox'],
+                    'Date': ['datetime'],
+                }
                 const indexVal = get(field, ['customDictionaryFields']).findIndex(element => {
                     // check type in dictionary-attributes and type in forms
-                    if ((type === 'textfield' || type === 'number' || type === 'textarea') && (element.type === 'string' || element.type === 'number') && element.ref === undefined) {
+                    if (type === 'select' && element.ref !== undefined) {
                         return true;
-                    } else if (type === 'select' && element.type === 'string' && element.ref !== undefined) {
-                        return true;
-                    } else if (type === 'datetime' && element.type === 'Date') {
-                        return true;
-                    } else if (type === 'checkbox' && element.type === 'boolean') {
-                        return true;
+                    } else {
+                        const isValid = typeCompute[element.type].includes(type) && element.ref === undefined;
+                        return isValid;
                     }
                 });
                 if (indexVal !== -1) {
@@ -88,25 +91,22 @@ function DictionaryAttributesEntries(field, editField) {
     const getOptions = (key) => {
         const types = get(field, ['type']);
         let arrElement = [];
+        const typeCompute = {
+            'string': ['textfield', 'textarea'],
+            'number': ['number'],
+            'boolean': ['checkbox'],
+            'Date': ['datetime'],
+        }
         get(field, ['customDictionaryFields']).map(element => {
-            if ((types === 'textfield' || types === 'number' || types === 'textarea') && (element.type === 'string' || element.type === 'number') && element.ref === undefined) {
-                arrElement.push(element.name);
-            } else if (types === 'select' && element.type === 'string' && element.ref !== undefined) {
-                arrElement.push(element.name);
-            } else if (types === 'datetime' && element.type === 'Date') {
-                arrElement.push(element.name);
-            } else if (types === 'checkbox' && element.type === 'boolean') {
-                arrElement.push(element.name);
-            }
-        });
-        let dictionaryFields = [];
-        get(field, [key]).map(element => {
-            if (arrElement.includes(element.label)) {
-                dictionaryFields.push(element);
+            if (types === 'select' && element.ref !== undefined) {
+                arrElement.push({ value: element.name, label: element.name });
+            } else {
+                const isValid = typeCompute[element.type].includes(types) && element.ref === undefined;
+                if (isValid) arrElement.push({ value: element.name, label: element.name });
             }
         });
         return () => {
-            return dictionaryFields
+            return arrElement
         };
     };
 
@@ -115,7 +115,7 @@ function DictionaryAttributesEntries(field, editField) {
             editField(field, set(field, [key], value));
             const labels = get(field, ['label']);
             const types = get(field, ['type']);
-            const indexVal = get(field, ['customDictionarySelect']).findIndex(element => element.value === labels);
+            const indexVal = get(field, ['customDictionaryFields']).findIndex(element => element.label === labels);
             if (indexVal !== -1) {
                 const indexRefDictionary = get(field, ['customDictionaryFields']).findIndex(element => element.ref !== undefined && element.name === labels && types === 'select');
                 if (indexRefDictionary === -1) {
