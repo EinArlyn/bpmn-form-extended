@@ -6,7 +6,6 @@ import postcss from "rollup-plugin-postcss"; // Для обработки CSS
 import { terser } from "rollup-plugin-terser"; // Для минификации кода
 import alias from "@rollup/plugin-alias"; // Для управления путями и алиасами
 import replace from "@rollup/plugin-replace"; // Для замены переменных в коде
-import path from "path"; // Для работы с путями
 
 const production = !process.env.ROLLUP_WATCH; // Переменная для определения режима сборки
 
@@ -64,16 +63,25 @@ export default {
       extract: "assets/styles.css",
     }),
     svg(),
-    production &&
-      terser({
-        mangle: {
-          reserved: ["RangeField", "formFields.register", "formFields"],
-        },
-      }), // Минификация кода для продакшена
+    // production &&
+    //   terser({
+    //     mangle: {
+    //       reserved: ["RangeField", "formFields.register", "formFields"],
+    //       keep_classnames: true,
+    //       keep_fnames: true,
+    //     },
+    //     // compress: {
+    //     //   drop_console: false,
+    //     //   pure_funcs: ["RangeField", "formFields.register"],
+    //     // },
+    //     format: {
+    //       comments: false,
+    //     },
+    //   }), // Минификация кода для продакшена
   ],
   external: [
-    "@bpmn.io/form-js",
-    "@bpmn.io/properties-panel",
+    // "@bpmn.io/form-js",
+    // "@bpmn.io/properties-panel",
     "luxon", // Поскольку luxon появляется в циклических зависимостях
     "flatpickr", // Если вы не используете flatpickr напрямую
   ],
