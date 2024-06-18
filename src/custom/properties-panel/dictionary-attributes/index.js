@@ -96,6 +96,7 @@ function DictionaryAttributesEntries(field, editField) {
             'number': ['number'],
             'boolean': ['checkbox'],
             'Date': ['datetime'],
+            'ref': ['select']
         }
         get(field, ['customDictionaryFields']).map(element => {
             if (types === 'select' && element.ref !== undefined) {
