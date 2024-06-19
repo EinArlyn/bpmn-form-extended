@@ -29,6 +29,7 @@
     "bpmn-io-extension"
   ],
   "dependencies": {
+    "@bpmn-io/properties-panel": "^3.21.0",
     "diagram-js": "^14.3.3"
   },
   "peerDependencies": {

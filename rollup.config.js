@@ -26,13 +26,13 @@ export default {
   ],
   // Плагины для обработки кода
   plugins: [
-    replace({
-      "var __assign = (this && this.__assign)":
-        'var __assign = (typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : this).__assign',
-      "this.__assign": "undefined.__assign", // Замена для this в flatpickr
-      delimiters: ["", ""],
-      preventAssignment: true, // Не заменять значения переменных
-    }),
+    // replace({
+    //   "var __assign = (this && this.__assign)":
+    //     'var __assign = (typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : this).__assign',
+    //   "this.__assign": "undefined.__assign", // Замена для this в flatpickr
+    //   delimiters: ["", ""],
+    //   preventAssignment: true, // Не заменять значения переменных
+    // }),
     alias({
       // Пути и алиасы
       entries: [
@@ -50,6 +50,9 @@ export default {
     }),
     commonjs({
       include: "node_modules/**",
+      // namedExports: {
+      //   classnames: ["default"],
+      // },
     }),
     babel({
       babelHelpers: "bundled",
@@ -66,23 +69,30 @@ export default {
     production &&
       terser({
         mangle: {
-          reserved: ["RangeField", "formFields"],
+          reserved: ["RangeField", "formFields.register", "formFields"],
           keep_classnames: true,
           keep_fnames: true,
         },
-        compress: {
-          drop_console: false,
-          pure_funcs: ["RangeField", "formFields", "formFields.register"],
-        },
-        format: {
-          comments: false,
-        },
-      }), // Минификация кода для продакшена
+      }),
+    //   {
+    //   mangle: {
+    //     reserved: ["RangeField", "formFields.register", "formFields"],
+    //     keep_classnames: true,
+    //     keep_fnames: true,
+    //   },
+    //   compress: {
+    //     drop_console: false,
+    //     pure_funcs: ["RangeField", "formFields.register"],
+    //   },
+    //   format: {
+    //     comments: false,
+    //   },
+    // } // Минификация кода для продакшена
   ],
   external: [
     // "@bpmn-io/form-js",
     // "@bpmn-io/properties-panel",
-    "luxon", // Поскольку luxon появляется в циклических зависимостях
-    "flatpickr", // Если вы не используете flatpickr напрямую
+    // "luxon", // Поскольку luxon появляется в циклических зависимостях
+    // "flatpickr", // Если вы не используете flatpickr напрямую
   ],
 };
