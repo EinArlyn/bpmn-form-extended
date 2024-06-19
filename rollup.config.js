@@ -63,25 +63,25 @@ export default {
       extract: "assets/styles.css",
     }),
     svg(),
-    // production &&
-    //   terser({
-    //     mangle: {
-    //       reserved: ["RangeField", "formFields.register", "formFields"],
-    //       keep_classnames: true,
-    //       keep_fnames: true,
-    //     },
-    //     // compress: {
-    //     //   drop_console: false,
-    //     //   pure_funcs: ["RangeField", "formFields.register"],
-    //     // },
-    //     format: {
-    //       comments: false,
-    //     },
-    //   }), // Минификация кода для продакшена
+    production &&
+      terser({
+        mangle: {
+          reserved: ["RangeField", "formFields"],
+          keep_classnames: true,
+          keep_fnames: true,
+        },
+        compress: {
+          drop_console: false,
+          pure_funcs: ["RangeField", "formFields", "formFields.register"],
+        },
+        format: {
+          comments: false,
+        },
+      }), // Минификация кода для продакшена
   ],
   external: [
-    // "@bpmn.io/form-js",
-    // "@bpmn.io/properties-panel",
+    "@bpmn-io/form-js",
+    "@bpmn-io/properties-panel",
     "luxon", // Поскольку luxon появляется в циклических зависимостях
     "flatpickr", // Если вы не используете flatpickr напрямую
   ],
