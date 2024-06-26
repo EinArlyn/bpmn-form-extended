@@ -4,7 +4,7 @@ import BaseForm from "./base-form";
 export class FormEditor extends BaseForm {
   constructor(options, isAdditionalModules = true) {
     console.log("Initializing FormEditor with options:", options);
-    super(FE, options, isAdditionalModules);
+    super(FE, options, "FormEditor", isAdditionalModules);
   }
 }
 

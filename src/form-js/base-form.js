@@ -1,14 +1,16 @@
 import { RenderExtension, PropertiesPanelExtension } from "../custom";
 
 class BaseForm {
-  constructor(FormClass, options, isAdditionalModules = true) {
+  constructor(FormClass, options, type, isAdditionalModules = true) {
     console.log("Initializing BaseForm with options:", options);
     if (isAdditionalModules) {
       options.additionalModules = [
         ...(options.additionalModules || []),
         RenderExtension,
-        PropertiesPanelExtension,
       ];
+      if (type !== "Form") {
+        options.additionalModules.push(PropertiesPanelExtension);
+      }
     }
     this.customForm = new FormClass(options);
   }
