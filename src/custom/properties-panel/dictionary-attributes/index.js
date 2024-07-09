@@ -40,15 +40,12 @@ export class DictionaryAttributesPropertiesProvider {
                     'number': ['number'],
                     'boolean': ['checkbox'],
                     'Date': ['datetime'],
+                    'ref': ['select']
                 }
                 const indexVal = get(field, ['customDictionaryFields']).findIndex(element => {
                     // check type in dictionary-attributes and type in forms
-                    if (type === 'select' && element.ref !== undefined) {
-                        return true;
-                    } else {
-                        const isValid = typeCompute[element.type].includes(type) && element.ref === undefined;
-                        return isValid;
-                    }
+                    const isValid = typeCompute[element.type].includes(type);
+                    return isValid;
                 });
                 if (indexVal !== -1) {
                     /* insert dictionary-attributes group after general */
@@ -74,16 +71,18 @@ function DictionaryAttributesEntries(field, editField) {
     let refDictionary = '';
     let refDictionaryField = '';
     let typeDictionaryField = '';
+    let fieldNameDictionary = '';
 
     const getValue = (key) => {
         return () => {
-            const labels = get(field, ['label']);
-            const indexVal = get(field, [key]).findIndex(element => element.value === labels);
+            const fieldName = get(field, ['fieldNameDictionary']);
+            const indexVal = get(field, [key]).findIndex(element => element.value === fieldName);
             if (indexVal !== -1) {
+                if (get(field, ['fieldNameDictionary']) !== undefined) fieldNameDictionary = get(field, ['fieldNameDictionary']);
                 if (get(field, ['refDictionary']) !== undefined) refDictionary = get(field, ['refDictionary']);
                 if (get(field, ['refDictionaryField']) !== undefined) refDictionaryField = get(field, ['refDictionaryField']);
                 if (get(field, ['typeDictionaryField']) !== undefined) typeDictionaryField = get(field, ['typeDictionaryField']);
-                return labels;
+                return fieldName;
             };
         };
     };
@@ -99,12 +98,7 @@ function DictionaryAttributesEntries(field, editField) {
             'ref': ['select']
         }
         get(field, ['customDictionaryFields']).map(element => {
-            if (types === 'select' && element.ref !== undefined) {
-                arrElement.push({ value: element.name, label: element.name });
-            } else {
-                const isValid = typeCompute[element.type].includes(types) && element.ref === undefined;
-                if (isValid) arrElement.push({ value: element.name, label: element.name });
-            }
+            typeCompute[element.type].includes(types) ? arrElement.push({ value: element.name, label: element.name }) : null;
         });
         return () => {
             return arrElement
@@ -114,11 +108,12 @@ function DictionaryAttributesEntries(field, editField) {
     const setValue = (key) => {
         return (value) => {
             editField(field, set(field, [key], value));
-            const labels = get(field, ['label']);
+            editField(field, set(field, ['fieldNameDictionary'], value));
+            const fieldName = get(field, ['fieldNameDictionary']);
             const types = get(field, ['type']);
-            const indexVal = get(field, ['customDictionaryFields']).findIndex(element => element.label === labels);
+            const indexVal = get(field, ['customDictionaryFields']).findIndex(element => element.name === fieldName);
             if (indexVal !== -1) {
-                const indexRefDictionary = get(field, ['customDictionaryFields']).findIndex(element => element.ref !== undefined && element.name === labels && types === 'select');
+                const indexRefDictionary = get(field, ['customDictionaryFields']).findIndex(element => element.ref !== undefined && element.name === fieldName && types === 'select');
                 if (indexRefDictionary === -1) {
                     refDictionary = '';
                     refDictionaryField = '';
@@ -126,7 +121,7 @@ function DictionaryAttributesEntries(field, editField) {
                     editField(field, set(field, ['refDictionaryField'], refDictionaryField));
                 } else {
                     get(field, ['customDictionaryFields']).map(el => {
-                        if (el.ref !== undefined && el.ref !== undefined && el.name === labels) {
+                        if (el.ref !== undefined && el.ref !== undefined && el.name === fieldName) {
                             refDictionary = el.ref;
                             refDictionaryField = el.field;
                             editField(field, set(field, ['refDictionary'], refDictionary));
@@ -135,7 +130,7 @@ function DictionaryAttributesEntries(field, editField) {
                     });
                 }
                 get(field, ['customDictionaryFields']).map(elem => {
-                    if (elem.name === labels) {
+                    if (elem.name === fieldName) {
                         typeDictionaryField = elem.type;
                         editField(field, set(field, ['typeDictionaryField'], typeDictionaryField));
                     };
