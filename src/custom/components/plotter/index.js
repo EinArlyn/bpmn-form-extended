@@ -1,39 +1,54 @@
 import { IFrame } from "@bpmn-io/form-js";
 import { html } from "diagram-js/lib/ui";
 import classNames from "classnames";
-import "../../../assets/css/plotter.css";
-import "../../../assets/js/plotter.js";
+import "../../../assets/js/bundle.js";
 
 export const plotterType = "plotter";
 
 export function PlotterRenderer(props) {
-  console.log("PlotterRenderer", props);
-
   // #region Constants
   const { field } = props;
-  const { plotter = { height: 600 } } = field;
-  const { height } = plotter;
+  const { plotter } = field;
   //#endregion
 
-  console.log("Plotter", plotter);
+  if (plotter !== null && plotter !== undefined) {
+    const model = jsonParse(plotter.model);
+    if (model !== null) {
+      // document.querySelector('configurator-component').setAttribute('model', JSON.stringify(model));
+      setTimeout(() => {
+        document.querySelector('configurator-component').setAttribute('model', JSON.stringify(model));
+      }, 2000);
+    } else {
+      console.warn("Model is not an object", plotter.model);
+    }
+  }
 
   const styles = {
-    height: `${height}px`,
+    height: `600px`,
   };
 
   return html`<div style=${styles} class=${formFieldClasses(plotterType)}>
-    <configurator-editor-component
-      view-mode="select"
-      edit-mode="true"
-    ></configurator-editor-component>
+    <configurator-component></configurator-component>
   </div>`;
 }
 
-const webcomponent = document.querySelector("configurator-editor-component");
-console.log("webcomponent", webcomponent);
-
 function formFieldClasses() {
   return classNames("fjs-form-field");
+}
+
+function jsonParse(value) {
+  if (value == null) {
+    console.warn("Value is null or undefined");
+    return null;
+  }
+
+  try {
+    const result = JSON.parse(value);
+    return typeof result === "object" && result !== null ? result : null;
+  } catch (error) {
+    console.warn("Invalid JSON:", error.message);
+    return null;
+  }
 }
 
 PlotterRenderer.config = {
@@ -44,12 +59,9 @@ PlotterRenderer.config = {
   // iconUrl: `data:image/svg+xml,${encodeURIComponent(RangeIcon)}`,
   propertiesPanelEntries: [
     "key",
-    "height",
     "label",
     "description",
     "disabled",
     "readonly",
   ],
 };
-
-console.log("PlotterRenderer.config", PlotterRenderer.config);

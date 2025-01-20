@@ -17,8 +17,6 @@ export const rangeType = "range";
  * to render our components without the need of extra JSX transpilation.
  */
 export function RangeRenderer(props) {
-  console.log("RangeRenderer", props);
-
   // #region Constants
   const { disabled, errors = [], field, readonly, value } = props;
   const { description, range = {}, id, label } = field;
@@ -29,7 +27,6 @@ export function RangeRenderer(props) {
   // #endregion
 
   const onChange = ({ target }) => {
-    console.log("onChange", target);
     props.onChange({
       field,
       value: Number(target.value),

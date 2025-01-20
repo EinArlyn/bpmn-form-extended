@@ -2,7 +2,6 @@ import { RenderExtension, PropertiesPanelExtension } from "../custom";
 
 class BaseForm {
   constructor(FormClass, options, type, isAdditionalModules = true) {
-    console.log("Initializing BaseForm with options:", options);
     if (isAdditionalModules) {
       options.additionalModules = [
         ...(options.additionalModules || []),
@@ -16,7 +15,6 @@ class BaseForm {
   }
 
   importSchema(schema, data) {
-    console.log("Importing schema with data:", data);
     return this.customForm.importSchema(schema, data);
   }
 
@@ -31,7 +29,6 @@ class BaseForm {
   }
 
   on(event, ...args) {
-    console.log(`Registering event: ${event}`);
     // Унифицируем метод on для обработки возможной перегрузки
     if (typeof args[0] === "function") {
       this.customForm.on(event, args[0]); // Только колбэк

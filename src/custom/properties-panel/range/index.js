@@ -11,7 +11,6 @@ import { html } from "diagram-js/lib/ui";
  */
 export class RangePropertiesProvider {
   constructor(propertiesPanel) {
-    console.log("RangePropertiesProvider", propertiesPanel);
     propertiesPanel.registerProvider(this, 500);
   }
 
