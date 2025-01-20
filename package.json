@@ -1,53 +1,53 @@
 {
-    "name": "@einarlyn/bpmn-form-extended",
-    "version": "1.2.37",
-    "description": "An extension library for @bpmn.io/form-js that provides custom form editor functionalities",
-    "main": "dist/index.js",
-    "module": "dist/index.es.js",
-    "scripts": {
-        "build": "rollup -c"
-    },
-    "author": "Aleksandr <greshnikalexm@gmail.com>",
-    "license": "MIT",
-    "publishConfig": {
-        "access": "public"
-    },
-    "files": [
-        "dist"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/EinArlyn/bpmn-form-extended.git"
-    },
-    "keywords": [
-        "vue",
-        "form",
-        "custom",
-        "library",
-        "form-js",
-        "form-editor",
-        "bpmn-io-extension"
-    ],
-    "dependencies": {
-        "@bpmn-io/properties-panel": "^3.21.0",
-        "diagram-js": "^14.3.3"
-    },
-    "peerDependencies": {
-        "@bpmn-io/form-js": "^1.9.0"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.24.4",
-        "@babel/plugin-transform-react-jsx": "^7.23.4",
-        "@babel/preset-env": "^7.24.5",
-        "@rollup/plugin-alias": "^5.1.0",
-        "@rollup/plugin-babel": "^6.0.4",
-        "@rollup/plugin-commonjs": "^25.0.7",
-        "@rollup/plugin-node-resolve": "^15.2.3",
-        "@rollup/plugin-replace": "^5.0.5",
-        "rollup": "^2.79.1",
-        "rollup-plugin-postcss": "^4.0.2",
-        "rollup-plugin-svg": "^2.0.0",
-        "rollup-plugin-terser": "^7.0.2",
-        "webpack": "^5.91.0"
-    }
+  "name": "@einarlyn/bpmn-form-extended",
+  "version": "1.2.38",
+  "description": "An extension library for @bpmn.io/form-js that provides custom form editor functionalities",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "author": "Aleksandr <greshnikalexm@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EinArlyn/bpmn-form-extended.git"
+  },
+  "keywords": [
+    "vue",
+    "form",
+    "custom",
+    "library",
+    "form-js",
+    "form-editor",
+    "bpmn-io-extension"
+  ],
+  "dependencies": {
+    "@bpmn-io/properties-panel": "^3.21.0",
+    "diagram-js": "^14.3.3"
+  },
+  "peerDependencies": {
+    "@bpmn-io/form-js": "^1.9.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.4",
+    "@babel/plugin-transform-react-jsx": "^7.23.4",
+    "@babel/preset-env": "^7.24.5",
+    "@rollup/plugin-alias": "^5.1.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.5",
+    "rollup": "^2.79.1",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-svg": "^2.0.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "webpack": "^5.91.0"
+  }
 }

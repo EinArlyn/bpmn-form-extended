@@ -2,12 +2,12 @@ import { get, set } from "min-dash";
 import {
   NumberFieldEntry,
   isNumberFieldEntryEdited,
+  FeelTemplatingEntry
 } from "@bpmn-io/properties-panel";
 import { html } from "diagram-js/lib/ui";
 
 export class PlotterPropertiesProvider {
   constructor(propertiesPanel) {
-    console.log("PlotterPropertiesProvider", propertiesPanel);
     propertiesPanel.registerProvider(this, 500);
   }
 
@@ -51,14 +51,21 @@ function PlotterEntries(field, editField) {
   };
 
   return [
+    // {
+    //   id: "plotter-height",
+    //   component: Height,
+    //   getValue,
+    //   field,
+    //   isEdited: isNumberFieldEntryEdited,
+    //   onChange,
+    // },
     {
-      id: "plotter-height",
-      component: Height,
+      id: "plotter-add-model",
+      component: AddModel,
       getValue,
       field,
-      isEdited: isNumberFieldEntryEdited,
-      onChange,
-    },
+      onChange
+    }
   ];
 }
 
@@ -76,6 +83,21 @@ function Height(props) {
     setValue=${onChange("height")}
     value=${600}
     debounce=${debounce}
+  />`;
+}
+
+function AddModel(props) {
+  const { field, id, getValue, onChange, show } = props;
+
+  const debounce = (fn) => fn;
+
+  return html`<${FeelTemplatingEntry}
+    element=${field}
+    id=${id}
+    label="Add model"
+    debounce=${debounce}
+    getValue=${getValue("model")}
+    setValue=${onChange("model")}
   />`;
 }
 

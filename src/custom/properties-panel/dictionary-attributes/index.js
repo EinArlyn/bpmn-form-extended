@@ -30,7 +30,6 @@ export class DictionaryAttributesPropertiesProvider {
             if (field.type === 'range') {
                 return groups;
             }
-            //console.log('field customSettingsDictionary', field)
 
             if (field.customSettingsDictionary !== undefined) {
                 const type = get(field, ['type']);
